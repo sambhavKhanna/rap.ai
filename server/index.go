@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+
 	"github.com/joho/godotenv"
 )
 
@@ -16,7 +17,7 @@ func groq() {
 	var GROQ_API_KEY = os.Getenv("GROQ_API_KEY")
 	url := "https://api.groq.com/openai/v1/chat/completions"
 	contentType := "application/json"
-	data := []byte(`{"messages": [{"role": "user", "content": "Explain the importance of fast language models"}], "model": "llama3-8b-8192"}`)
+	data := []byte(`{"messages": [{"role": "user", "content": "Explain the importance of fast language models"}], "model": "llama3-8b-8192", "stream": true}`)
 	client := &http.Client{}
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(data))
 	if err != nil {
@@ -31,7 +32,7 @@ func groq() {
 		panic(err)
 	}
 	defer resp.Body.Close()
-
+	
 	var respStr strings.Builder
 	content, err := io.ReadAll(resp.Body)
 	if err != nil {

@@ -8,6 +8,7 @@ import (
 	"os"
 	"strings"
 	"github.com/joho/godotenv"
+	"github.com/gin-gonic/gin"
 )
 
 func groq() {
@@ -41,5 +42,11 @@ func groq() {
 }
 
 func main() {
-	groq()
+	r := gin.Default()
+	r.GET("/", func(ctx *gin.Context) {
+		ctx.JSON(http.StatusOK, gin.H{
+			"message": "Wagwan",
+		})
+	})
+	r.Run(":3000")
 }

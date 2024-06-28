@@ -2,13 +2,15 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 	"os"
 	"strings"
-	"github.com/joho/godotenv"
+
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func groq() {
@@ -47,6 +49,11 @@ func main() {
 		ctx.JSON(http.StatusOK, gin.H{
 			"message": "Wagwan",
 		})
+	})
+	r.POST("/", func(ctx *gin.Context) {
+		var res gin.H
+		json.NewDecoder(ctx.Request.Body).Decode(&res)
+		ctx.JSON(http.StatusOK, res)
 	})
 	r.Run(":3000")
 }

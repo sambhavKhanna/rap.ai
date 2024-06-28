@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"os"
 	"strings"
-
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -43,8 +42,21 @@ func groq() {
 	fmt.Println(respStr.String())
 }
 
+func CORS(ctx *gin.Context) {
+	ctx.Header("Access-Control-Allow-Origin", "*")
+	ctx.Header("Access-Control-Allow-Credentials", "true")
+	ctx.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+	ctx.Header("Access-Control-Allow-Methods", "OPTIONS, POST, GET, PUT, DELETE")
+	if ctx.Request.Method == "OPTIONS" {
+		ctx.AbortWithStatus(204)
+		return
+	}
+	ctx.Next()
+}
+
 func main() {
 	r := gin.Default()
+	r.Use(CORS)
 	r.GET("/", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, gin.H{
 			"message": "Wagwan",
@@ -55,5 +67,5 @@ func main() {
 		json.NewDecoder(ctx.Request.Body).Decode(&res)
 		ctx.JSON(http.StatusOK, res)
 	})
-	r.Run(":3000")
+	r.Run(":4000")
 }

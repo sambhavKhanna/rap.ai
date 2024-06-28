@@ -7,10 +7,8 @@ import (
 	"net/http"
 	"os"
 	"strings"
-
 	"github.com/joho/godotenv"
 )
-
 
 func groq() {
 	godotenv.Load()
